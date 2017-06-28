@@ -12,4 +12,6 @@ public class TimeLogic {
 	private int time = 1;
 	
 	public int getTime(){ return time;}
+	
+	public void setTime(int value) { time = value;}
 }
