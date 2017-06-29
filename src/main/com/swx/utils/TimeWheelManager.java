@@ -23,9 +23,9 @@ public class TimeWheelManager {
 		}
 	}
 
-	private List<TimeLogic>[] secList = new LinkedList[60]; // 秒钟 0 ～ 60
-	private List<TimeLogic>[] minList = new LinkedList[60]; // 分钟 0 ～ 60
-	private List<TimeLogic>[] hourList = new LinkedList[24]; // 分钟 0 ～ 24
+	private List<TimeOutLogic>[] secList = new LinkedList[60]; // 秒钟 0 ～ 60
+	private List<TimeOutLogic>[] minList = new LinkedList[60]; // 分钟 0 ～ 60
+	private List<TimeOutLogic>[] hourList = new LinkedList[24]; // 分钟 0 ～ 24
 
 	private int secCount = 0;
 	private int minCount = 0;
@@ -37,7 +37,7 @@ public class TimeWheelManager {
 	 * 
 	 * @param element
 	 */
-	public void Add(TimeLogic element) {
+	public void Add(TimeOutLogic element) {
 		if (null == element)
 			return;
 
@@ -69,11 +69,11 @@ public class TimeWheelManager {
 		return;
 	}
 
-	public void AddList(List<TimeLogic> elements) {
+	public void AddList(List<TimeOutLogic> elements) {
 		if (null == elements || elements.isEmpty())
 			return;
 
-		for (TimeLogic element : elements) {
+		for (TimeOutLogic element : elements) {
 			Add(element);
 		}
 	}
@@ -88,12 +88,28 @@ public class TimeWheelManager {
 
 			if (minCount >= 60) // 小时
 			{
-				AddList(hourList[hourCount % 60]);
-				hourList[hourCount % 60] = null;
-				hourCount++;
+			 	List<TimeOutLogic> cells = hourList[hourCount % 60];
+			 	if(null != cells && false == cells.isEmpty())
+			 	{
+			 		for(TimeOutLogic cell:cells){
+				 		cell.setTime(cell.getTime() - 3600);
+			 			Add(cell);		
+			 		}
+			 	}
+			 	hourList[hourCount % 60] = null;
+		 		hourCount++;
 			}
 
-			AddList(minList[minCount % 60]);
+			List<TimeOutLogic> cells = minList[minCount % 60];
+			if(null != cells && false == cells.isEmpty())
+			{
+				for(TimeOutLogic cell:cells)
+				{
+					cell.setTime(cell.getTime() - 60);
+					Add(cell);
+				}
+			}
+			
 			minList[minCount % 60] = null;
 			minCount++;
 		}
@@ -102,10 +118,10 @@ public class TimeWheelManager {
 		List lst = secList[secCount];
 		if (null != lst) {
 			// 执行逻辑
-			Iterator<TimeLogic> it = lst.iterator();
+			Iterator<TimeOutLogic> it = lst.iterator();
 			while (it.hasNext()) {
-				TimeLogic obj = it.next();
-				obj.action();// 执行
+				TimeOutLogic logic = it.next();
+				logic.action();// 执行
 				it.remove(); // 移除
 			}
 		}

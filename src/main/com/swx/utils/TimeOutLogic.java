@@ -5,7 +5,7 @@ package com.swx.utils;
  * @author rodking
  * 时间轮逻辑
  */
-public class TimeLogic {
+public class TimeOutLogic {
 	
 	public void action(){}
 
