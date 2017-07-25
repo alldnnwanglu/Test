@@ -32,7 +32,7 @@ public class BigMultiplication {
 		}
 		
 		
-		System.out.println(one +" * " + two + " = "+ (Long.parseLong(one) * Long.parseLong(two)));
+		//System.out.println(one +" * " + two + " = "+ (Long.parseLong(one) * Long.parseLong(two)));
 		System.out.println(one +" * " + two + " = "+ tempStr);
 	
 		return tempStr;
